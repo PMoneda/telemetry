@@ -109,8 +109,8 @@ func (t *Telemetry) StartRuntimeTelemetry() {
 		case <-tick:
 			var m runtime.MemStats
 			runtime.ReadMemStats(&m)
-			alloc := float64(m.Alloc) / (1024 * 1024)
-			totalAlloc := float64(m.TotalAlloc) / (1024 * 1024)
+			alloc := float64(m.Alloc) / (1024)
+			totalAlloc := float64(m.TotalAlloc) / (1024)
 			gcRun := float64(m.NumGC)
 			t.Push("memory-alloc", alloc)
 			t.Push("total-memory-alloc", totalAlloc)
