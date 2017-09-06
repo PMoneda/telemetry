@@ -6,7 +6,7 @@ services:
     ports:
       - "8086:8086"
   chronograf:
-    image: chronograf:latest
+    image: chronograf:alpine
     container_name: "chronograf"      
     ports:
       - 8888:8888
@@ -16,7 +16,7 @@ services:
     image: grafana/grafana
     container_name: "grafana"      
     ports:
-      - 3000:3000
+      - 8081:3000
     links:
       - influxdb       
   
