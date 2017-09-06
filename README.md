@@ -31,4 +31,11 @@ To login into Grafana:
 You can use the example.go to test all the stack.
 But before you need to create a Database test
 
+#### note 4:
+On Browser
+``` 
+ chronograf: http://localhost:8888
+ grafana: http://localhost:8081
+```
+
 
