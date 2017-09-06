@@ -13,19 +13,19 @@ Telemetry is tiny telemetry collector and buffer to InfluxDB
   on Grafana you need to choose 'proxy' connection option to connect to Influxdb  
   ```
   
-note 1: 
+#### note 1: 
 Wait for Grafana run migrations (it could take some time!) before try to open it on browser
 Check if Grafana is ON by executing the following command
 ```
 $docker logs grafana
 ```
 
-note 2:
+#### note 2:
 To login into Grafana:
 user: admin
 password: admin
 
-note 3:
+#### note 3:
 You can use the example.go to test all the stack.
 But before you need to create a Database test
 
