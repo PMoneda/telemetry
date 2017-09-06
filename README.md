@@ -22,8 +22,10 @@ $docker logs grafana
 
 #### note 2:
 To login into Grafana:
-user: admin
-password: admin
+``` 
+ user: admin
+ password: admin
+```
 
 #### note 3:
 You can use the example.go to test all the stack.
