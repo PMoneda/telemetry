@@ -8,6 +8,8 @@ import (
 	client "github.com/influxdata/influxdb/client/v2"
 )
 
+const sep string = ":::"
+
 //InfluxDB is the interface to Influx instance
 type InfluxDB struct {
 	Port      string
@@ -63,7 +65,7 @@ func (db *InfluxDB) Register(tag string, value interface{}) (err error) {
 //Flush save data to influxdb
 func (db *InfluxDB) Flush(tag string) (err error) {
 	meta := db.parseTag(tag)
-	bp, found := db.Buffer[meta.DB+"."+meta.Retention]
+	bp, found := db.Buffer[meta.DB+sep+meta.Retention]
 	if found {
 		err = db.Client.Write(bp)
 	}
@@ -73,7 +75,7 @@ func (db *InfluxDB) Flush(tag string) (err error) {
 //FindOrCreateBatchPoint creates a new bach points if not exist
 func (db *InfluxDB) FindOrCreateBatchPoint(tag string) (batch client.BatchPoints, err error) {
 	meta := db.parseTag(tag)
-	batch, found := db.Buffer[meta.DB+"."+meta.Retention]
+	batch, found := db.Buffer[meta.DB+sep+meta.Retention]
 	if !found {
 		batch, err = db.createBatchPoint(tag)
 	}
@@ -89,13 +91,13 @@ func (db *InfluxDB) createBatchPoint(tag string) (batch client.BatchPoints, err 
 		Precision:       db.Precision,
 		RetentionPolicy: meta.Retention,
 	})
-	db.Buffer[meta.DB+"."+meta.Retention] = bp
+	db.Buffer[meta.DB+sep+meta.Retention] = bp
 	batch = bp
 	return
 }
 
 func (db *InfluxDB) parseTag(tag string) (meta registryMetaData) {
-	parts := strings.Split(tag, ".")
+	parts := strings.Split(tag, sep)
 	meta.DB = parts[0]
 	meta.Retention = parts[1]
 	meta.Measurement = parts[2]

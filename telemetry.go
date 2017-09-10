@@ -13,6 +13,8 @@ type Telemetry struct {
 	Root     string
 }
 
+var sep string = ":::"
+
 //Context is a basic type to config telemetry
 type Context func(*Telemetry) *Telemetry
 
@@ -32,7 +34,7 @@ type Value Context
 func (r Tag) Tag(value string) Value {
 	return func(t *Telemetry) *Telemetry {
 		r(t)
-		t.Root = t.Root + "." + value
+		t.Root = t.Root + sep + value
 		return t
 	}
 }
@@ -41,7 +43,7 @@ func (r Tag) Tag(value string) Value {
 func (r Value) Value(value string) Context {
 	return func(t *Telemetry) *Telemetry {
 		r(t)
-		t.Root = t.Root + "." + value
+		t.Root = t.Root + sep + value
 		return t
 	}
 }
@@ -50,7 +52,7 @@ func (r Value) Value(value string) Context {
 func (r Measurement) Measurement(s string) Tag {
 	return func(t *Telemetry) *Telemetry {
 		r(t)
-		t.Root = t.Root + "." + s
+		t.Root = t.Root + sep + s
 		return t
 	}
 }
@@ -59,7 +61,7 @@ func (r Measurement) Measurement(s string) Tag {
 func (r RetentionPolicy) RetentionPolicy(s string) Measurement {
 	return func(t *Telemetry) *Telemetry {
 		r(t)
-		t.Root = t.Root + "." + s
+		t.Root = t.Root + sep + s
 		return t
 	}
 }
@@ -90,7 +92,7 @@ func BuildTelemetryContext(config registry.Config, ctx Context) *Telemetry {
 
 //Push data to this telemetry
 func (t *Telemetry) Push(tag string, value interface{}) (err error) {
-	err = t.Registry.Register(t.Root+"."+tag, value)
+	err = t.Registry.Register(t.Root+sep+tag, value)
 	return
 }
 

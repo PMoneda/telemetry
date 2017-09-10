@@ -79,6 +79,8 @@ func (sensor *NetworkBeatSensor) Read() {
 	duration := end.Sub(start)
 	sensor.register("response", response)
 	sensor.register("status", status)
-	sensor.register("error", err.Error())
+	if err != nil {
+		sensor.register("error", err.Error())
+	}
 	sensor.register("request-time", duration.Seconds())
 }

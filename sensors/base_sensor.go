@@ -10,7 +10,7 @@ type BaseSensor struct {
 
 func (sensor *BaseSensor) register(tag string, value interface{}) {
 	if sensor.context != "" {
-		sensor.registry.Register(sensor.context+"."+tag, value)
+		sensor.registry.Register(sensor.context+":::"+tag, value)
 	} else {
 		sensor.registry.Register(tag, value)
 	}
