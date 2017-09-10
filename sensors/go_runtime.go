@@ -1,20 +1,10 @@
 package sensors
 
-import (
-	"runtime"
-
-	"github.com/PMoneda/telemetry/registry"
-)
+import "runtime"
 
 //RuntimeSensor collect data from go runtime
 type RuntimeSensor struct {
 	BaseSensor
-}
-
-//Plug a registry and a name context to this sensor
-func (sensor *RuntimeSensor) Plug(reg registry.Registry, context string) {
-	sensor.context = context
-	sensor.registry = reg
 }
 
 func (sensor *RuntimeSensor) Read() {
