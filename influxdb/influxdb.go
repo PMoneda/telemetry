@@ -28,6 +28,7 @@ type registryMetaData struct {
 	FieldValue  interface{}
 }
 
+//New returns a new influxdb connection
 func New(host, port string) *InfluxDB {
 	db := new(InfluxDB)
 	db.Host = host
@@ -38,8 +39,8 @@ func New(host, port string) *InfluxDB {
 	return db
 }
 
-//Registry a new Point to InfluxDB
-func (db *InfluxDB) Registry(tag string, value interface{}) (err error) {
+//Register a new Point to InfluxDB
+func (db *InfluxDB) Register(tag string, value interface{}) (err error) {
 	// Create a new point batch
 	meta := db.parseTag(tag)
 	bp, err := db.FindOrCreateBatchPoint(tag)
@@ -58,6 +59,8 @@ func (db *InfluxDB) Registry(tag string, value interface{}) (err error) {
 	}
 	return
 }
+
+//Flush save data to influxdb
 func (db *InfluxDB) Flush(tag string) (err error) {
 	meta := db.parseTag(tag)
 	bp, found := db.Buffer[meta.DB+"."+meta.Retention]
@@ -67,6 +70,7 @@ func (db *InfluxDB) Flush(tag string) (err error) {
 	return
 }
 
+//FindOrCreateBatchPoint creates a new bach points if not exist
 func (db *InfluxDB) FindOrCreateBatchPoint(tag string) (batch client.BatchPoints, err error) {
 	meta := db.parseTag(tag)
 	batch, found := db.Buffer[meta.DB+"."+meta.Retention]
@@ -101,6 +105,7 @@ func (db *InfluxDB) parseTag(tag string) (meta registryMetaData) {
 	return
 }
 
+//Connect stablished connection with influxdb
 func (db *InfluxDB) Connect() (err error) {
 	c, err := client.NewHTTPClient(client.HTTPConfig{
 		Addr: db.Host + ":" + db.Port,
@@ -111,6 +116,8 @@ func (db *InfluxDB) Connect() (err error) {
 	db.Client = c
 	return
 }
+
+//FlushAll save all batche points to influxdb
 func (db *InfluxDB) FlushAll() (err error) {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()

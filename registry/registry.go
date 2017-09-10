@@ -3,7 +3,7 @@ package registry
 import "github.com/PMoneda/telemetry/influxdb"
 
 type Registry interface {
-	Registry(tag string, value interface{}) error
+	Register(tag string, value interface{}) error
 	Flush(tag string) error
 	FlushAll() error
 }
