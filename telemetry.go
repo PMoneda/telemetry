@@ -88,7 +88,7 @@ func (t *Telemetry) PushAndFlush(tag string, value interface{}) (err error) {
 	if err != nil {
 		return
 	}
-	err = t.Registry.Flush(tag)
+	err = t.Registry.Flush(t.Root + "." + tag)
 	return
 }
 
