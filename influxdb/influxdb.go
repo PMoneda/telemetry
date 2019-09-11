@@ -85,7 +85,7 @@ func (db *InfluxDB) createBatchPoint(tag string) (batch client.BatchPoints, err 
 	bp, err := client.NewBatchPoints(client.BatchPointsConfig{
 		Database:        meta.DB,
 		Precision:       db.Precision,
-		WriteConsistency: db.Consistency
+		WriteConsistency: db.Consistency,
 		RetentionPolicy: meta.Retention,
 	})
 	db.Buffer[meta.DB+"."+meta.Retention] = bp
